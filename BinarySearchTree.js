@@ -61,6 +61,9 @@ class BST {
     }
     return false;
   }
+  Remove(data) {
+    this.Root = RemoveNode(this.Root, data);
+  }
 }
 
 function SearchTree(node, data) {
@@ -80,18 +83,53 @@ function SearchTree(node, data) {
     }
   } else return null;
 }
+function RemoveNode(node, data) {
+  if (node == null) {
+    return null;
+  }
+  if (data == node.Data) {
+    if (node.Left == null && node.Right == null) {
+      return null;
+    }
+    if (node.Left == null) {
+      return node.Right;
+    }
+    if (node.Right == null) {
+      return node.Left;
+    }
+    let tempNode = node.Right;
+    while (tempNode.Left !== null) {
+      tempNode = tempNode.Left;
+    }
+    node.Data = tempNode.Data;
+    node.Right = RemoveNode(node.Right, tempNode.Data);
+    return node;
+  }
+  if (data < node.Data) {
+    node.Left = RemoveNode(node.Left, data);
+    return node;
+  }
+  if (data > node.Data) {
+    node.Right = RemoveNode(node.Right, data);
+    return node;
+  }
+}
 
 var bst = new BST();
 bst.Add(88);
 bst.Add(77);
+bst.Add(76);
 bst.Add(78);
 bst.Add(98);
 
-console.log(bst);
 console.log(bst.Root);
-console.log(bst.FindMax());
-console.log(bst.FindMin());
-console.log(bst.Find(90));
-console.log(bst.Find(77));
-console.log(bst.IsPresent(90));
+// console.log(bst.FindMax());
+// console.log(bst.FindMin());
+// console.log(bst.Find(90));
+// console.log(bst.Find(77));
 console.log(bst.IsPresent(77));
+console.log(bst.Remove(77));
+console.log(bst.IsPresent(77));
+
+console.log(bst.Root);
+// console.log(bst.IsPresent(77));
